@@ -168,8 +168,14 @@ app.get('/comment/:id', async (req, res) => {
 
 // ホーム
 app.get("/", (req, res) => {
-   const charge = axios.get(`https://watawatawata.glitch.me/`);
-   res.sendFile(__dirname + "/views/index.html");
+  try {
+    const response = await axios.get(`https://wataamee.glitch.me/topvideos/apiv2`);
+    const topVideos = response.data;
+    res.render("wakametube.ejs", { topVideos });
+  } catch (error) {
+    console.error('エラーが発生しました:', error);
+    res.status(500).send('データを取得できませんでした');
+  }
 });
 
 app.get('/st', (req, res) => {
