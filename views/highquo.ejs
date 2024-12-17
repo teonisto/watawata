@@ -33,13 +33,13 @@
     <source src="<%= videoData.highstreamUrl %>" type="video/mp4">
     読み込み失敗。ブラウザをアップデートしてどうぞ。
   </video>
-  </div>
-<div class="card">
-  <div class="toolcard-header">
      <audio id="audio" controls>
         <source src="<%= videoData.audioUrl %>">
     </audio>
-    <button id="syncButton">オーディオの位置を動画に合わせる</button>
+  </div>
+<div class="card">
+  <div class="toolcard-header">
+    <small class="text-muted">音が流れない場合、再生を一時停止してもう一度再生してみて下さい。</small>
   </div>
   <div class="toolcard-header">
     <small class="text-muted">ツール　　<button onclick="location.href='/ll/<%= videoData.videoId %>'">音のみで再生する</button><button id="reloadButton">動画を再読み込み</button></small>
@@ -188,20 +188,16 @@ video {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       padding: 20px;
       text-align: left;
-      box-sizing: border-box;
+      box-sizing: border-box;}
+    #audio {
+        display: none;
+    }
 </style>
     <script>
         const video = document.getElementById('video');
         const audio = document.getElementById('audio');
-        const syncButton = document.getElementById('syncButton');
 
-        video.addEventListener('loadedmetadata', () => {
-            video.play().catch(error => {
-                console.error("動画の再生エラー:", error);
-            });
-        });
-
-        video.addEventListener('play', () => {
+       video.addEventListener('play', () => {
             audio.play().catch(error => {
                 console.error("オーディオの再生エラー:", error);
             });
@@ -209,18 +205,28 @@ video {
 
         video.addEventListener('pause', () => {
             audio.pause();
+            audio.currentTime = video.currentTime;
         });
 
         video.addEventListener('ended', () => {
             audio.pause();
             audio.currentTime = 0; 
         });
-
-        syncButton.addEventListener('click', () => {
+      
+        video.addEventListener('seeked', () => {
             video.pause();
             audio.pause();
             audio.currentTime = video.currentTime;
+            video.play();
+            audio.play();
         });
+      
+        video.addEventListener('timeupdate', () => {
+            if (Math.abs(video.currentTime - audio.currentTime) > 0.5) {
+                audio.currentTime = video.currentTime;
+            }
+        });
+
 document.getElementById('reloadButton').addEventListener('click', function() {
     const video = document.getElementById('video');
     const audio = document.getElementById('audio');
