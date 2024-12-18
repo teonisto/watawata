@@ -182,6 +182,17 @@ app.get("/videores/:id", async (req, res) => {
   }
 });
 
+app.get("/difserver/:id", async (req, res) => {
+  let videoId = req.params.id || req.query.v;
+  try {
+    res.render("difserver.ejs", {
+      videoId: videoId
+    });
+  } catch (error) {
+    res.status(500).render('error');
+  }
+});
+
 // ホーム
 app.get("/", async (req, res) => {
   try {
