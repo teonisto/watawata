@@ -63,7 +63,10 @@
 <div class="card">
   <div class="toolcard-header">
     <small class="text-muted">「ツール」は右上に移動しました。</small>
-    <small class="text-muted float-right"><button class="favorite-btn" onclick="toggleFavorite('<%= videoData.videoId %>', '<%= videoData.channelId %>', '<%= videoData.channelName %>','<%= videoData.videoTitle %>')">お気に入り</button></small>
+    <small class="text-muted float-right"><button class="favorite-btn" onclick="toggleFavorite('<%= videoData.videoId %>', '<%= videoData.channelId %>', '<%= videoData.channelName %>','<%= videoData.videoTitle %>')">お気に入り</button><button id="reloadButton">動画を再読み込み</button></small>
+  </div>
+  <div class="toolcard-header">
+    <small class="text-muted">利用したサーバー: <%= baseUrl.replace('https://', '').replace('.glitch.me', '') %></small>
   </div>
   <div class="card-channel">
     <div class="container">
@@ -414,6 +417,11 @@ function getFavoritesFromCookies() {
             $('form').submit();
         }
     });
+});
+
+document.getElementById('reloadButton').addEventListener('click', function() {
+    const video = document.getElementById('wakameVideo');
+    video.load();
 });
 </script>
 <scody>
