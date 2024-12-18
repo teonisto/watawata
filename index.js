@@ -54,7 +54,7 @@ app.get('/w/:id', async (req, res) => {
         const randomIndex = Math.floor(Math.random() * serverUrls['0'].length);
         baseUrl = serverUrls['0'][randomIndex];
     } else {
-        baseUrl = serverUrls[server] || 'https://battle-deciduous-bear.glitch.me';
+        baseUrl = serverUrls[server] || 'https://wtserver1.glitch.me';
     }
   
     if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) {
@@ -64,7 +64,7 @@ app.get('/w/:id', async (req, res) => {
     const cookies = parseCookies(req);
     const wakames = cookies.wakametubeumekomi === 'true';
     if (wakames) {
-        return res.redirect(`/wkt/umekomi/${videoId}`);
+        return res.redirect(`/umekomi/${videoId}`);
     }
     try {
         console.log(baseUrl);
