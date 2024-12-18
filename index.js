@@ -36,16 +36,19 @@ app.get('/w/:id', async (req, res) => {
     const server = req.query.server || '0';
     const serverUrls = {
         '0': [
-        'https://amenable-charm-lute.glitch.me',
-        'https://battle-deciduous-bear.glitch',
-        'https://productive-noon-van.glitch.me',
+        'https://natural-voltaic-titanium.glitch.me',
+        'https://balsam-secret-fine.glitch.me',
+        'https://wtserver1.glitch.me',
         ],
         '1': 'https://wataamee.glitch.me',
         '2': 'https://watawatawata.glitch.me',
-        '3': 'https://battle-deciduous-bear.glitch.me',
+        '3': 'https://amenable-charm-lute.glitch.me',
         '4': 'https://productive-noon-van.glitch.me',
-        '5': 'https://balsam-secret-fine.glitch.me',
+        '5': 'https://wtserver1.glitch.me',
+        "6": "https://battle-deciduous-bear.glitch.me",
+        "7": 'https://productive-noon-van.glitch.me',
     };
+
     let baseUrl;
     if (server === '0') {
         const randomIndex = Math.floor(Math.random() * serverUrls['0'].length);
@@ -63,23 +66,20 @@ app.get('/w/:id', async (req, res) => {
     if (wakames) {
         return res.redirect(`/wkt/umekomi/${videoId}`);
     }
-
     try {
+        console.log(baseUrl);
         const response = await axios.get(`${baseUrl}/api/${videoId}`);
-
         const videoData = response.data;
         console.log(videoData);
 
-        res.render('infowatch', { videoData, videoId });
-    } catch (error) {
-        console.error(`Failed to fetch video data: ${error.message}`, error.response?.data);
-
-        res.status(500).render('matte', {
-            videoId,
-            error: '動画を取得できません',
-            details: error.message,
-        });
-    }
+        res.render('infowatch', { videoData, videoId, baseUrl });
+  } catch (error) {
+        res.status(500).render('mattev', { 
+      videoId, baseUrl,
+      error: '動画を取得できません', 
+      details: error.message 
+    });
+  }
 });
 
 
