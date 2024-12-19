@@ -39,6 +39,7 @@ app.get('/w/:id', async (req, res) => {
         'https://natural-voltaic-titanium.glitch.me',
         'https://balsam-secret-fine.glitch.me',
         'https://wtserver1.glitch.me',
+        'https://productive-noon-van.glitch.me',
         ],
         '1': 'https://wataamee.glitch.me',
         '2': 'https://watawatawata.glitch.me',
