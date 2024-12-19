@@ -202,9 +202,10 @@ app.get("/", async (req, res) => {
     res.render("wakametube.ejs", { topVideos });
   } catch (error) {
     console.error('エラーが発生しました:', error);
-    res.status(500).send('データを取得できませんでした');
+    res.render("wakametube.ejs", { topVideos: [] });
   }
 });
+
 
 app.get('/st', (req, res) => {
     res.sendStatus(200);
