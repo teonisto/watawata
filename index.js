@@ -789,6 +789,92 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
+//わかめedu
+app.get('/edu', (req, res) =>{
+  res.render('edu/home');
+})
+
+app.get('/wk/:id', async(req, res) => {
+  const { id } = req.params;
+  try{
+    const response = await axios.get(`https://wccreat.glitch.me/data/${id}`);
+    const html = response.data.html;
+    res.send(html);
+  }catch(error){
+    res.stat(500).send("ページが存在していません。");
+  }
+});
+
+app.get('/wk/login/:id', async(req, res) => {
+  const { id } = req.params;
+  try{
+    const response = await axios.get(`https://wccreat.glitch.me/data/${id}`);
+    const html = response.data.html;
+    res.send(html);
+  }catch(error){
+    res.stat(500).send("ページが存在していません。");
+  }
+});
+
+app.get('/edu/create/:id', (req, res) => {
+  const { id } = req.params;
+  res.render('edu/create', { id });
+});
+
+app.get('/edu/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await axios.get(`https://wccreat.glitch.me/data/${id}`);
+    const html = response.data.html;
+    res.render('edu/edit', { id, html });
+  } catch (error) {
+    console.error('Error fetching HTML:', error.message);
+    res.status(500).send('HTMLデータの取得中にエラーが発生しました。');
+  }
+});
+
+app.get('/edu/f/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`edu/f/${id}`);
+});
+
+app.get('/edu/help/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`edu/help/${id}`);
+});
+
+app.get('/edu/site/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`edu/site/${id}`);
+});
+
+app.get('/edu/sitehtml/:id', (req, res) => {
+  const id = req.params.id;
+  res.render(`edu/sitehtml/${id}`);
+});
+
+app.get('/edu/site', (req, res) => {
+  const id = req.params.id;
+  res.render(`edu/site`);
+});
+
+app.all("/edu/request",async(req,res)=>{
+  try{
+    const path=req.query.path;
+    const options={
+      method:req.method,
+      url:`https://wccreat.glitch.me${path}`,
+      headers:{...req.headers,host:undefined},
+      data:["POST","PUT","PATCH"].includes(req.method)? req.body: null
+    };
+    const {data:response}=await axios(options);
+    res.set("Content-Type", "text/plain").send(response);
+  }catch(e){
+    console.error(e);
+    res.send({message:"リクエストに失敗しました"});
+  }
+});
+
 // エラー
 app.use((req, res) => {
 	res.status(404).render("error.ejs", {
