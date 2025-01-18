@@ -790,7 +790,7 @@ app.get("/block/cc3q",(req, res) => {
 })
 
 
-//わかめedu
+//edu
 app.get('/edu', (req, res) =>{
   res.render('edu/home');
 })
