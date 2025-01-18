@@ -789,6 +789,7 @@ app.get("/block/cc3q",(req, res) => {
   res.render('../views/tst/2.ejs', { ip: ip });
 })
 
+
 //わかめedu
 app.get('/edu', (req, res) =>{
   res.render('edu/home');
