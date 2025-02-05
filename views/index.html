@@ -1,24 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-  <title>WataWata</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>わかめtube - copy</title>
+  <meta name="description" content="まっしろになってゆく">
+  <meta property="og:title" content="わかめtube">
+  <meta property="og:description" content="まっしろになってゆく">
+  <meta property="og:site_name" content="わかめtube | まっしろになっていく">
+  <meta property="og:image" content="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1142.png?v=1718674777380">
+  <meta name="theme-color" content="#ff8181">
+  <link rel="shortcut icon" href="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1142.png?v=1718674777380">
+  <meta name="author" content="わかめtube | まっしろ">
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/font.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
 </head>
+
 <body>
-  <h1>WataWata</h1>
-
-  <div id="video-area">
+  <header>
+    <div class="banner">
+      <button class="btn btn-link" onclick="window.location.href='/wakameokini'">お気に入り<br>💫</button>
+      <button class="btn btn-link" onclick="window.location.href='/setting'">設定<br>⚙️</button>
+      <button class="btn btn-link" onclick="window.location.href='/send'">問い合わせ<br>✉️</button>
+      <button class="btn btn-link" onclick="window.location.href='/wakams'">曲を聴く<br>🎶</button>
     </div>
+  </header>
 
-  <a href="/download/動画ファイル名" download id="download-link">ダウンロード</a>
+  <main class="container text-center">
+    <div class="search-bar">
+      <form action="/s" method="get">
+        <input type="text" name="q" id="searchbox" class="form-control" placeholder="キーワードを入力..." required>
+        <button type="submit" class="btn btn-search">検索(けんさく)</button>
+      </form>
+    </div>
+  </main>
+  <br><br>
+  <footer class="text-center">
+    <a href="/proxy"><span class="mt-5 mb-3 text-muted">WAO (プロキシ)</span></a><br><br><br>
+    <a href="/app"><span class="mt-5 mb-3 text-muted">app🎮</span></a><br><br><br>
+    <a href="/wakams"><span class="mt-5 mb-3 text-muted">わかめMusic🎶</span></a><br><br><br>
+    <a href="/tool"><span class="mt-5 mb-3 text-muted">ツール🧰</span></a><br><br><br>
+    <a href="/blog/help"><span class="mt-5 mb-3 text-muted">ヘルプ</span></a><br><br><br>
+  </footer>
 
-  <script>
-    // ダウンロードリンクの要素を取得
-    const downloadLink = document.getElementById('download-link');
+  <div class="hover-target">
+    <div class="profile-card">
+      <a href="/blog/wakame02">
+        <img src="https://cdn.glitch.global/441c91ae-2a7f-4142-9ffb-ab0c7066dfa1/IMG_1281.png?v=1718682861752" alt="アイコン">
+        <div class="name">わかめ02</div>
+        <div class="description">わーい</div>
+      </a>
+    </div>
+  </div>
 
-    // ダウンロード処理 (必要に応じて)
-    downloadLink.addEventListener('click', (event) => {
-      // ダウンロード処理
+  <style>
+    header {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .banner {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background: none;
+      background-color: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 10px 15px;
+      transition: background 0.3s, transform 0.3s;
+      border-radius: 5px;
+    }
+
+    .container {
+      margin-top: 50px;
+    }
+
+    .search-bar {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-control {
+      padding-right: 80px;
+    }
+
+    .btn-search {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .hover-target {
+      display: inline-block;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .profile-card {
+      display: none;
+      left: 50%;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: center;
+    }
+
+    .hover-target:hover .profile-card {
+      display: block;
+    }
+
+    .profile-card img {
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+    }
+
+    .profile-card .name {
+      font-size: 1.5em;
+      margin: 10px 0;
+    }
+
+    .profile-card .description {
+      font-size: 1em;
+      color: #666;
+    }
+  </style>
+
+<script>
+$(function () {
+    $('#searchbox').autocomplete({
+        source: function (request, response) {
+            $.ajax({
+                url: '/suggest',
+                data: { keyword: request.term },
+                success: function (data) {
+                    response(data);
+                }
+            });
+        },
+        delay: 1,
+        select: function (event, ui) {
+            $('#searchbox').val(ui.item.value);
+            $('form').submit();
+        }
     });
-  </script>
+});
+</script>
 </body>
+
 </html>
